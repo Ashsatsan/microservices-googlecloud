@@ -88,13 +88,13 @@ This project demonstrates a secure Istio configuration to manage microservices t
    ```bash
    kubectl apply -f peer.yml  #for default namespace
      apiVersion: security.istio.io/v1beta1
-kind: PeerAuthentication
-metadata:
-  name: default
-  namespace: backend
-spec:
-  mtls:
-    mode: STRICT
+     kind: PeerAuthentication
+     metadata:
+     name: default
+     namespace: backend
+    spec:
+    mtls:
+     mode: STRICT
 
    
    kubectl apply -f peer2.yml  # for frontend namespace
