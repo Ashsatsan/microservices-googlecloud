@@ -34,9 +34,9 @@ This project demonstrates a secure Istio configuration to manage microservices t
 - **gateway.yml**: Configures the Istio ingress gateway to accept traffic on ports 443 and 80 only.
 
 #### Peer Authentication
-1. **peer.yml**: Configures mutual TLS (mTLS) for the `frontend` namespace.
-2. **peer2.yml**: Configures mTLS for the `backend` namespace.
-3. **peer3.yml**: Configures mTLS for the `default` namespace.
+1. **peer.yml**: Configures mutual TLS (mTLS) for the `default` namespace.
+2. **peer2.yml**: Configures mTLS for the `frontend` namespace.
+3. **peer3.yml**: Configures mTLS for the `backend` namespace.
 
 #### Virtual Services
 1. **virtualservice.yml**: Routes traffic accessing the host to the corresponding service securely.
@@ -61,12 +61,16 @@ This project demonstrates a secure Istio configuration to manage microservices t
      --cert=frontend.crt \
      --key=frontend.key
    ```
+   ```
+   
    To ensure the certificate got created 
    Abhijeet Singh@Abhijeet MINGW64 /c/project/istio/istio-1.24.2 (main)
    $ kubectl get secret -n istio-system
-NAME                         TYPE                DATA   AGE
-istio-ca-secret              istio.io/ca-root    5      25h
-istio-ingressgateway-certs   kubernetes.io/tls   2      23h
+     NAME                         TYPE                DATA   AGE
+     istio-ca-secret              istio.io/ca-root    5      25h
+     istio-ingressgateway-certs   kubernetes.io/tls   2      23 
+   ```
+   
 
 ### Step 2: Apply Configurations
 1. Deploy the authorization policies:
@@ -109,21 +113,23 @@ spec:
    kubectl get pods -n frontend
    kubectl get pods -n backend
    ```
+   ```
+   
     $ kubectl get pod -n backend
-NAME                                     READY   STATUS    RESTARTS       AGE
-adservice-74bdc9bcf6-xl8sr               2/2     Running   0              24h
-cartservice-7f7b9fc469-67gph             2/2     Running   0              24h
-cartservice-v2-d7fb846db-px9dt           2/2     Running   0              19m
-checkoutservice-6bbccb4788-8nfl6         2/2     Running   0              24h
-currencyservice-795445fcb8-b4728         2/2     Running   4 (157m ago)   24h
-emailservice-c498b5f8b-62qh5             2/2     Running   0              24h
-loadgenerator-55b7ff944b-gr9pk           2/2     Running   0              24h
-paymentservice-6578f9dcfd-s2jfn          2/2     Running   4 (49m ago)    24h
-productcatalogservice-5865bf7d98-vd9cn   2/2     Running   0              24h
-recommendationservice-758d9b68c4-hvk9c   2/2     Running   0              24h
-redis-cart-7ff8f4d6ff-dvfwx              2/2     Running   0              24h
-shippingservice-65cc774694-pfbh9         2/2     Running   0              24h
-
+   NAME                                     READY   STATUS    RESTARTS       AGE
+   adservice-74bdc9bcf6-xl8sr               2/2     Running   0              24h
+   cartservice-7f7b9fc469-67gph             2/2     Running   0              24h
+   cartservice-v2-d7fb846db-px9dt           2/2     Running   0              19m
+   checkoutservice-6bbccb4788-8nfl6         2/2     Running   0              24h
+   currencyservice-795445fcb8-b4728         2/2     Running   4 (157m ago)   24h
+   emailservice-c498b5f8b-62qh5             2/2     Running   0              24h
+   loadgenerator-55b7ff944b-gr9pk           2/2     Running   0              24h
+   paymentservice-6578f9dcfd-s2jfn          2/2     Running   4 (49m ago)    24h
+   productcatalogservice-5865bf7d98-vd9cn   2/2     Running   0              24h
+   recommendationservice-758d9b68c4-hvk9c   2/2     Running   0              24h
+   redis-cart-7ff8f4d6ff-dvfwx              2/2     Running   0              24h
+   shippingservice-65cc774694-pfbh9         2/2     Running   0              24h
+ ```
 $ kubectl get pod -n frontend
 NAME                        READY   STATUS    RESTARTS   AGE
 frontend-7c96fdb969-jl2s5   2/2     Running   0          25h
@@ -132,6 +138,8 @@ frontend-7c96fdb969-jl2s5   2/2     Running   0          25h
    ```bash
    istioctl proxy-status
    ```
+   ```
+
    NAME                                                   CLUSTER        CDS                LDS                EDS                RDS                ECDS        ISTIOD                     VERSION
 adservice-74bdc9bcf6-xl8sr.backend                     Kubernetes     SYNCED (22m)       SYNCED (22m)       SYNCED (22m)       SYNCED (22m)       IGNORED     istiod-ddcf4fdd9-wfbfp     1.24.2
 cartservice-7f7b9fc469-67gph.backend                   Kubernetes     SYNCED (26m)       SYNCED (26m)       SYNCED (26m)       SYNCED (26m)       IGNORED     istiod-ddcf4fdd9-wfbfp     1.24.2
@@ -147,22 +155,22 @@ productcatalogservice-5865bf7d98-vd9cn.backend         Kubernetes     SYNCED (14
 recommendationservice-758d9b68c4-hvk9c.backend         Kubernetes     SYNCED (5m31s)     SYNCED (5m31s)     SYNCED (5m31s)     SYNCED (5m31s)     IGNORED     istiod-ddcf4fdd9-wfbfp     1.24.2
 redis-cart-7ff8f4d6ff-dvfwx.backend                    Kubernetes     SYNCED (15m)       SYNCED (15m)       SYNCED (15m)       SYNCED (15m)       IGNORED     istiod-ddcf4fdd9-wfbfp     1.24.2
 shippingservice-65cc774694-pfbh9.backend               Kubernetes     SYNCED (28m)       SYNCED (28m)       SYNCED (28m)       SYNCED (28m)       IGNORED     istiod-ddcf4fdd9-wfbfp     1.24.2
+   ```
 
 4. Analyze namespace configurations:
    ```bash
    istioctl analyze -n frontend
    istioctl analyze -n backend
    ```
-  Abhijeet Singh@Abhijeet MINGW64 /c/project/istio/istio-1.24.2 (main)
-$ istioctl analyze -n backend
-
-✔ No validation issues found when analyzing namespace: backend.
-
-Abhijeet Singh@Abhijeet MINGW64 /c/project/istio/istio-1.24.2 (main)
-$ istioctl analyze -n frontend
-
-✔ No validation issues found when analyzing namespace: frontend.
-
+   ```
+   $ istioctl analyze -n backend
+   ✔ No validation issues found when analyzing namespace: backend.
+ 
+   Abhijeet Singh@Abhijeet MINGW64 /c/project/istio/istio-1.24.2 (main)
+   $ istioctl analyze -n frontend
+   ✔ No validation issues found when analyzing namespace: frontend.
+   ```
+  
    
 4. Test external access:
    Access the `frontend` service using the configured domain (e.g., `https://frontend.satsan.site`). Ensure no direct access to `backend` services.
