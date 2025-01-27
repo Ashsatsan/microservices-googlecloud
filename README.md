@@ -134,8 +134,4 @@ This project demonstrates a secure Istio configuration to manage microservices t
 
 ---
 
-## Impressing the Interviewer
-- Provide a live demo of external access to the `frontend` service and restricted access to the `backend` namespace.
-- Highlight the use of Istio features like mTLS, AuthorizationPolicies, and canary deployment.
-- Discuss scalability and how additional policies can extend the setup.
 
