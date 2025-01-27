@@ -26,7 +26,7 @@ This project demonstrates a secure Istio configuration to manage microservices t
 
 #### Authorization Policies
 1. **deny-authorization.yml**: Denies traffic to `backend` namespace from outside the cluster.
-2. **backend-internal.yml**: Allows communication between services within the `backend` namespace.
+2. **backend-internal.yml**: Allows communication between services within the `backend` namespace and 'frontend' namespace.
 3. **frontend-internal.yml**: Allows communication within the `frontend` namespace.
 4. **frontend-authorization.yml**: Permits external traffic only to the `frontend` namespace while restricting access to `backend`.
 
@@ -61,6 +61,12 @@ This project demonstrates a secure Istio configuration to manage microservices t
      --cert=frontend.crt \
      --key=frontend.key
    ```
+   To ensure the certificate got created 
+   Abhijeet Singh@Abhijeet MINGW64 /c/project/istio/istio-1.24.2 (main)
+   $ kubectl get secret -n istio-system
+NAME                         TYPE                DATA   AGE
+istio-ca-secret              istio.io/ca-root    5      25h
+istio-ingressgateway-certs   kubernetes.io/tls   2      23h
 
 ### Step 2: Apply Configurations
 1. Deploy the authorization policies:
@@ -76,9 +82,19 @@ This project demonstrates a secure Istio configuration to manage microservices t
    ```
 3. Enable mTLS for namespaces:
    ```bash
-   kubectl apply -f peer.yml
-   kubectl apply -f peer2.yml
-   kubectl apply -f peer3.yml
+   kubectl apply -f peer.yml  #for default namespace
+     apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: default
+  namespace: backend
+spec:
+  mtls:
+    mode: STRICT
+
+   
+   kubectl apply -f peer2.yml  # for frontend namespace
+   kubectl apply -f peer3.yml  # for backend namespace
    ```
 4. Set up virtual services and destination rules:
    ```bash
@@ -93,15 +109,61 @@ This project demonstrates a secure Istio configuration to manage microservices t
    kubectl get pods -n frontend
    kubectl get pods -n backend
    ```
-2. Verify services are synced with Istio:
+    $ kubectl get pod -n backend
+NAME                                     READY   STATUS    RESTARTS       AGE
+adservice-74bdc9bcf6-xl8sr               2/2     Running   0              24h
+cartservice-7f7b9fc469-67gph             2/2     Running   0              24h
+cartservice-v2-d7fb846db-px9dt           2/2     Running   0              19m
+checkoutservice-6bbccb4788-8nfl6         2/2     Running   0              24h
+currencyservice-795445fcb8-b4728         2/2     Running   4 (157m ago)   24h
+emailservice-c498b5f8b-62qh5             2/2     Running   0              24h
+loadgenerator-55b7ff944b-gr9pk           2/2     Running   0              24h
+paymentservice-6578f9dcfd-s2jfn          2/2     Running   4 (49m ago)    24h
+productcatalogservice-5865bf7d98-vd9cn   2/2     Running   0              24h
+recommendationservice-758d9b68c4-hvk9c   2/2     Running   0              24h
+redis-cart-7ff8f4d6ff-dvfwx              2/2     Running   0              24h
+shippingservice-65cc774694-pfbh9         2/2     Running   0              24h
+
+$ kubectl get pod -n frontend
+NAME                        READY   STATUS    RESTARTS   AGE
+frontend-7c96fdb969-jl2s5   2/2     Running   0          25h
+   
+3. Verify services are synced with Istio:
    ```bash
    istioctl proxy-status
    ```
-3. Analyze namespace configurations:
+   NAME                                                   CLUSTER        CDS                LDS                EDS                RDS                ECDS        ISTIOD                     VERSION
+adservice-74bdc9bcf6-xl8sr.backend                     Kubernetes     SYNCED (22m)       SYNCED (22m)       SYNCED (22m)       SYNCED (22m)       IGNORED     istiod-ddcf4fdd9-wfbfp     1.24.2
+cartservice-7f7b9fc469-67gph.backend                   Kubernetes     SYNCED (26m)       SYNCED (26m)       SYNCED (26m)       SYNCED (26m)       IGNORED     istiod-ddcf4fdd9-wfbfp     1.24.2
+cartservice-v2-d7fb846db-px9dt.backend                 Kubernetes     SYNCED (22m)       SYNCED (22m)       SYNCED (22m)       SYNCED (22m)       IGNORED     istiod-ddcf4fdd9-wfbfp     1.24.2
+checkoutservice-6bbccb4788-8nfl6.backend               Kubernetes     SYNCED (16m)       SYNCED (16m)       SYNCED (16m)       SYNCED (16m)       IGNORED     istiod-ddcf4fdd9-wfbfp     1.24.2
+currencyservice-795445fcb8-b4728.backend               Kubernetes     SYNCED (28m)       SYNCED (28m)       SYNCED (28m)       SYNCED (28m)       IGNORED     istiod-ddcf4fdd9-wfbfp     1.24.2
+emailservice-c498b5f8b-62qh5.backend                   Kubernetes     SYNCED (5m57s)     SYNCED (5m57s)     SYNCED (5m57s)     SYNCED (5m57s)     IGNORED     istiod-ddcf4fdd9-wfbfp     1.24.2
+frontend-7c96fdb969-jl2s5.frontend                     Kubernetes     SYNCED (22m)       SYNCED (22m)       SYNCED (22m)       SYNCED (22m)       IGNORED     istiod-ddcf4fdd9-wfbfp     1.24.2
+istio-ingressgateway-7f57549c9f-cffpz.istio-system     Kubernetes     SYNCED (19m)       SYNCED (19m)       SYNCED (19m)       SYNCED (19m)       IGNORED     istiod-ddcf4fdd9-wfbfp     1.24.2
+loadgenerator-55b7ff944b-gr9pk.backend                 Kubernetes     SYNCED (14m)       SYNCED (14m)       SYNCED (14m)       SYNCED (14m)       IGNORED     istiod-ddcf4fdd9-wfbfp     1.24.2
+paymentservice-6578f9dcfd-s2jfn.backend                Kubernetes     SYNCED (6m30s)     SYNCED (6m30s)     SYNCED (6m30s)     SYNCED (6m30s)     IGNORED     istiod-ddcf4fdd9-wfbfp     1.24.2
+productcatalogservice-5865bf7d98-vd9cn.backend         Kubernetes     SYNCED (14m)       SYNCED (14m)       SYNCED (14m)       SYNCED (14m)       IGNORED     istiod-ddcf4fdd9-wfbfp     1.24.2
+recommendationservice-758d9b68c4-hvk9c.backend         Kubernetes     SYNCED (5m31s)     SYNCED (5m31s)     SYNCED (5m31s)     SYNCED (5m31s)     IGNORED     istiod-ddcf4fdd9-wfbfp     1.24.2
+redis-cart-7ff8f4d6ff-dvfwx.backend                    Kubernetes     SYNCED (15m)       SYNCED (15m)       SYNCED (15m)       SYNCED (15m)       IGNORED     istiod-ddcf4fdd9-wfbfp     1.24.2
+shippingservice-65cc774694-pfbh9.backend               Kubernetes     SYNCED (28m)       SYNCED (28m)       SYNCED (28m)       SYNCED (28m)       IGNORED     istiod-ddcf4fdd9-wfbfp     1.24.2
+
+4. Analyze namespace configurations:
    ```bash
    istioctl analyze -n frontend
    istioctl analyze -n backend
    ```
+  Abhijeet Singh@Abhijeet MINGW64 /c/project/istio/istio-1.24.2 (main)
+$ istioctl analyze -n backend
+
+✔ No validation issues found when analyzing namespace: backend.
+
+Abhijeet Singh@Abhijeet MINGW64 /c/project/istio/istio-1.24.2 (main)
+$ istioctl analyze -n frontend
+
+✔ No validation issues found when analyzing namespace: frontend.
+
+   
 4. Test external access:
    Access the `frontend` service using the configured domain (e.g., `https://frontend.satsan.site`). Ensure no direct access to `backend` services.
 
