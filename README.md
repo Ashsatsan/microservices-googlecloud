@@ -1,4 +1,4 @@
-![image alt]{https://github.com/Ashsatsan/microservices-googlecloud/blob/main/istioproj5.png?raw=true}
+![image alt](https://github.com/Ashsatsan/microservices-googlecloud/blob/main/istioproj5.png?raw=true)
 
 # Istio Project Documentation
 
@@ -239,7 +239,7 @@ kubectl get namespaces --show-labels
   ```bash
    istioctl install --set profile=default --set values.cni.enabled=false
   ```
-  Manual Cleanup: Manually clean up CNI configurations or leftover Istio resources that might be causing the issue.
+2. Manual Cleanup: Manually clean up CNI configurations or leftover Istio resources that might be causing the issue.
 
   For example, deleting CNI-related resources in the kube-system namespace:
   ```bash
@@ -247,7 +247,7 @@ kubectl get namespaces --show-labels
     kubectl delete daemonset istio-cni -n kube-system
   ```
 
- 2. 
+
   ## Load Balancing and Canary Deployment
   - **Load Balancing**: Configured via `destinationrule.yml` for consistent and efficient traffic distribution across pods.
   - **Canary Deployment**: 20% of traffic to `cartservice` is routed to `cartservice-v2` using `virtualservice-canary.yml`.
