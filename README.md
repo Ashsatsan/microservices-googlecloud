@@ -223,12 +223,15 @@ kubectl get namespaces --show-labels
 
 ---
 ### Step 4: Troubleshoot
-
+---
 1. ✘ Istiod encountered an error: failed to wait for resource: resources not ready after 5m0s: context deadline exceeded
    Deployment/istio-system/istiod (containers with unready status: [discovery])
-  ✘ CNI encountered an error: failed to update resource with server-side apply for obj ConfigMap/kube-system/istio-cni-config: configmaps "istio-cni-config" is forbidden: User "ashsatsan@gmail.com" cannot patch resource "configmaps" in API group "" in the namespace 
-  "kube-system": GKE Warden authz [denied by managed-namespaces-limitation]: the namespace "kube-system" is managed and the request's verb "patch" is denied
-
+  ✘ CNI encountered an error: failed to update resource with server-side apply for obj ConfigMap/kube-system/istio-cni- 
+   config: configmaps "istio-cni-config" is forbidden: User "xyz@gmail.com" cannot patch resource "configmaps" in API group 
+   "" in the namespace 
+  "kube-system": GKE Warden authz [denied by managed-namespaces-limitation]: the namespace "kube-system" is managed and the 
+  request's verb "patch" is denied
+---
   Solution:
   Install Istio without CNI: Since you don't need the CNI plugin right now, you can install Istio without it. You can use the istioctl command to install Istio with the --set flag to explicitly disable the CNI.
 
