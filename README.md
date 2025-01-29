@@ -288,7 +288,7 @@ Verify:
    
  ![image alt](https://github.com/Ashsatsan/microservices-googlecloud/blob/main/istioproj8.png?raw=true) 
  
- ![image alt](hhttps://github.com/Ashsatsan/microservices-googlecloud/blob/main/istioproj9.png?raw=true)
+ ![image alt](https://github.com/Ashsatsan/microservices-googlecloud/blob/main/istioproj9.png?raw=true)
 
 4. The overall project setup
 
