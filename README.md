@@ -253,6 +253,50 @@ kubectl get namespaces --show-labels
   - **Canary Deployment**: 20% of traffic to `cartservice` is routed to `cartservice-v2` using `virtualservice-canary.yml`.
 
 ---
+### Step 5: Monitoring
+After applying the istioctl install a dictoring named sample will get installed inside it there is one more directory named addons inside it all the monitoring tools yaml file will be found.
+  ```bash
+    kubectl apply -f samples/addons/kiali.yaml
+    kubectl apply -f samples/addons/prometheus.yaml
+    kubectl apply -f samples/addons/grafana.yaml
+  ```
+Verify:
+  ```bash
+   kubectl get pod -n istio-system
+ ```
+
+1. Configuration applied in this project via kaili dashboard:
+   a. command to access the dashboard:
+      ```bash
+       kubectl port-forward service/kiali 30001 -n istio-system  # copy the url and paste into browser
+      ```
+   ![image alt](https://github.com/Ashsatsan/microservices-googlecloud/blob/main/istioproj12.png?raw=true)
+
+2. View secure communication betweeen microservices and also view the communication between v2 version of cartservice
+    
+    ![image alt](https://github.com/Ashsatsan/microservices-googlecloud/blob/main/istioproj2.png?raw=true)
+
+3. Now Monitoring metrix via Grafana:
+  a. To access grafana follow similar steps as kiali.
+  b. Grafana Dashboard ask for the username and password.
+   ```bash
+    Username: admin
+    To access password execute the following command:
+    kubectl get secret <grafana-secret-name> -n <namespace> -o jsonpath="{.data.admin-password}" | base64 --decode
+
+   ```
+   
+ ![image alt](https://github.com/Ashsatsan/microservices-googlecloud/blob/main/istioproj8.png?raw=true) 
+ 
+ ![image alt](hhttps://github.com/Ashsatsan/microservices-googlecloud/blob/main/istioproj9.png?raw=true)
+
+4. The overall project setup
+
+   ![image alt](https://github.com/Ashsatsan/microservices-googlecloud/blob/main/istioproj4.png?raw=true)
+
+
+
+
 
 
 
