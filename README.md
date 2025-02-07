@@ -1,4 +1,4 @@
-![image alt](https://github.com/Ashsatsan/microservices-googlecloud/blob/main/istioproj5.png?raw=true)
+![image alt](https://github.com/Ashsatsan/microservices-googlecloud/blob/main/images/istioproj5.png?raw=true)
 
 # Istio Project Documentation
 
@@ -270,11 +270,11 @@ Verify:
       ```bash
        kubectl port-forward service/kiali 30001 -n istio-system  # copy the url and paste into browser
       ```
-   ![image alt](https://github.com/Ashsatsan/microservices-googlecloud/blob/main/istioproj12.png?raw=true)
+   ![image alt](https://github.com/Ashsatsan/microservices-googlecloud/blob/main/images/istioproj12.png?raw=true)
 
 2. View secure communication betweeen microservices and also view the communication between v2 version of cartservice
     
-    ![image alt](https://github.com/Ashsatsan/microservices-googlecloud/blob/main/istioproj2.png?raw=true)
+    ![image alt](https://github.com/Ashsatsan/microservices-googlecloud/blob/main/images/istioproj2.png?raw=true)
 
 3. Now Monitoring metrix via Grafana:
   a. To access grafana follow similar steps as kiali.
@@ -286,13 +286,13 @@ Verify:
 
    ```
    
- ![image alt](https://github.com/Ashsatsan/microservices-googlecloud/blob/main/istioproj8.png?raw=true) 
+ ![image alt](https://github.com/Ashsatsan/microservices-googlecloud/blob/main/images/istioproj8.png?raw=true) 
  
- ![image alt](https://github.com/Ashsatsan/microservices-googlecloud/blob/main/istioproj9.png?raw=true)
+ ![image alt](https://github.com/Ashsatsan/microservices-googlecloud/blob/main/images/istioproj9.png?raw=true)
 
 4. The overall project setup
 
-   ![image alt](https://github.com/Ashsatsan/microservices-googlecloud/blob/main/istioproj4.png?raw=true)
+   ![image alt](https://github.com/Ashsatsan/microservices-googlecloud/blob/main/images/istioproj4.png?raw=true)
 
 
 
