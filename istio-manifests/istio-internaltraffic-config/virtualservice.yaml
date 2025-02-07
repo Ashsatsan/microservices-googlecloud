@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: frontend-route
+  namespace: frontend
+spec:
+  hosts:
+  - "frontend.satsan.site"  # Match the host in Gateway
+  gateways:
+  - istio-system/microservices-gateway  # Reference the gateway defined above
+  http:
+  - match:
+    - uri:
+        prefix: /  # Match any URL path starting with "/"
+    route:
+    - destination:
+        host: frontend.frontend.svc.cluster.local  # Internal DNS for the frontend service
+        port:
+          number: 80  

@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: cartservice
+  namespace: backend  # Namespace updated to backend
+spec:
+  host: cartservice.backend.svc.cluster.local  # Use the FQDN
+  subsets:
+    - name: stable
+      labels:
+        app: cartservice  # Match the app label
+    - name: v2
+      labels:
+        app: cartservice
+        version: v2  # Match the version label
+

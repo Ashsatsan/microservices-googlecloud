@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: cartservice
+  namespace: backend  # Namespace updated to backend
+spec:
+  hosts:
+    - cartservice.backend.svc.cluster.local  # Use the FQDN
+  http:
+    - route:
+        - destination:
+            host: cartservice.backend.svc.cluster.local
+            subset: stable
+          weight: 80
+        - destination:
+            host: cartservice.backend.svc.cluster.local
+            subset: v2
+          weight: 20
+

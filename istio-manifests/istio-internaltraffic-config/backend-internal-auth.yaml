@@ -1,0 +1,14 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-internal-to-backend
+  namespace: backend
+spec:
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        namespaces: ["frontend", "backend"]
+    - source:
+        principals: ["*"]
+

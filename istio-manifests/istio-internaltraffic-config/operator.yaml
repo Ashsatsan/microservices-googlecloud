@@ -1,0 +1,58 @@
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+metadata:
+  name: istio-custom
+  namespace: istio-system
+spec:
+  profile: default # Use the default profile for comprehensive features
+  components:
+    base:
+      enabled: true
+    cni:
+      enabled: true # Enable CNI for secure networking
+    ingressGateways:
+    - enabled: true
+      name: istio-ingressgateway
+      k8s:
+        resources:
+          limits:
+            cpu: 500m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+    egressGateways:
+    - enabled: false # Enable only if services need to communicate externally
+  meshConfig:
+    enablePrometheusMerge: true
+    defaultConfig:
+      proxyMetadata: {}
+      proxy:
+        privileged: false # Ensure proxies are not privileged
+    accessLogFile: "/dev/stdout" # Enable access logging
+    accessLogEncoding: TEXT
+    accessLogFormat: '[%START_TIME%] "%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% HTTP/%PROTOCOL%" %RESPONSE_CODE% %RESPONSE_FLAGS%'
+    enableTracing: true
+    defaultServiceExportTo: "." # Restrict service exposure by default
+    outboundTrafficPolicy:
+      mode: REGISTRY_ONLY # Restrict traffic to known destinations
+  values:
+    global:
+      proxy:
+        autoInject: enabled
+      mtls:
+        enabled: true # Enable mutual TLS for secure communication
+        auto: true
+      controlPlaneSecurityEnabled: true
+    pilot:
+      env:
+        PILOT_ENABLE_PROTOCOL_SNIFFING_FOR_OUTBOUND: "false"
+        PILOT_ENABLE_PROTOCOL_SNIFFING_FOR_INBOUND: "false"
+    telemetry:
+      enabled: true
+      v2:
+        prometheus:
+          enabled: true
+        metadataExchange:
+          wasmEnabled: false
+  revision: "default"

@@ -1,0 +1,20 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: microservices-gateway
+  namespace: istio-system
+spec:
+  selector:
+    istio: ingressgateway  # Ensures the Gateway uses the Istio ingress gateway
+  servers:
+    - port:
+        number: 443
+        name: https
+        protocol: HTTPS
+      tls:
+        mode: SIMPLE  # Ensures Istio terminates the TLS connection
+        credentialName: istio-ingressgateway-certs  # Refers to the secret with the TLS certs
+        minProtocolVersion: TLSV1_2
+      hosts:
+        - "frontend.satsan.site"  # The domain you're using
+
