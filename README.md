@@ -8,7 +8,7 @@ The architecture after implementing istio configurations
 
 # Istio Project Documentation
 
-# Update: The istio internal configurations are placed inside istio-manifests/istio-internaltraffic-config, just in case.
+# Update: The istio internal configurations are placed inside istio-manifests/istio-internaltraffic-config directory, just to avoid confusion. thanks
 
 ## Overview
 This project demonstrates a secure Istio configuration to manage microservices traffic. The setup ensures:
