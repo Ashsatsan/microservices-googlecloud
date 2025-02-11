@@ -2,7 +2,7 @@ The architecture before implementing istio configurations
 
 ![image alt](https://github.com/GoogleCloudPlatform/microservices-demo/blob/main/docs/img/architecture-diagram.png?raw=true)
 
-The architecture before implementing istio configurations
+The architecture after implementing istio configurations
 
 ![image alt](https://github.com/Ashsatsan/microservices-googlecloud/blob/main/images/istioproj5.png?raw=true)
 
