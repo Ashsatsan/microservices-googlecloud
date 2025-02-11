@@ -6,6 +6,7 @@ The architecture after implementing istio configurations
 
 ![image alt](https://github.com/Ashsatsan/microservices-googlecloud/blob/main/images/istio%20zoom.png?raw=true)
 
+
 # Istio Project Documentation
 
 # Update: The istio internal configurations are placed inside istio-manifests/istio-internaltraffic-config directory, just to avoid confusion. thanks
