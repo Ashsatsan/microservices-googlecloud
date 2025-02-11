@@ -1,6 +1,14 @@
+The architecture before implementing istio configurations
+
+![image alt](https://github.com/GoogleCloudPlatform/microservices-demo/blob/main/docs/img/architecture-diagram.png?raw=true)
+
+The architecture before implementing istio configurations
+
 ![image alt](https://github.com/Ashsatsan/microservices-googlecloud/blob/main/images/istioproj5.png?raw=true)
 
 # Istio Project Documentation
+
+# Update: The istio internal configurations are placed inside istio-manifests/istio-internaltraffic-config, just in case.
 
 ## Overview
 This project demonstrates a secure Istio configuration to manage microservices traffic. The setup ensures:
